@@ -1,0 +1,4 @@
+# hostname:port:database:username:password
+*:*:*:user1:password_1
+*:*:*:user2:password_2
+*:*:*:user3:
