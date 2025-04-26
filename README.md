@@ -8,20 +8,39 @@ standard PostgreSQL file `~/.pgpass`, this simple library makes it possible.
 [PostgreSQL doc about pgpass](https://www.postgresql.org/docs/current/libpq-pgpass.html)
 
 
-## Installation
+## Usage Example
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `pgpass` to your list of dependencies in `mix.exs`:
+add as dependency to the project
 
+mix.exs
 ```elixir
-def deps do
-  [
-    {:pgpass, "~> 0.1.0"}
-  ]
+defmodule YourApp.MixProject do
+  use Mix.Project
+  # ...
+  defp deps do
+    [
+      # ...
+
+      {:pgpass, git: "https://github.com/edmtsky/pgpass.git", tag: "0.1.0"},
+    ]
+  end
+  # ...
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/pgpass>.
+how to use in config files
+
+config/dev.exs
+```elixir
+import Config
+
+# workaround to provite access to Pgpass module in config
+Code.require_file("./deps/pgpass/lib/pgpass.ex")
+
+# Configure your database
+config :sample_app, SampleApp.Repo,
+  username: "dbuser",
+  password: Pgpass.find_password("dbuser"),
+  # ...
+```
 
