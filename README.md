@@ -21,7 +21,7 @@ defmodule YourApp.MixProject do
     [
       # ...
 
-      {:pgpass, git: "https://github.com/edmtsky/pgpass.git", tag: "0.1.0"},
+      {:pgpass, git: "https://github.com/edmtsky/pgpass.git", tag: "0.1.1"},
     ]
   end
   # ...
@@ -44,3 +44,24 @@ config :sample_app, SampleApp.Repo,
   # ...
 ```
 
+
+## Important. First fetch the dependency and only then add it to the config
+
+You must first register and tighten the dependency via mix deps.get and only
+then register the connection via:
+
+```ex
+Code.require_file("./deps/pgpass/lib/pgpass.ex")
+```
+
+otherwise, if you first "enable" the use of the file in the config via
+require_file and only then try to do mix deps.get, you will get something like this error:
+
+```sh
+mix deps.get
+
+** (Code.LoadError) could not load ~/youproject/deps/pgpass/lib/pgpass.ex. Reason: enoent
+    (elixir 1.18.4) lib/code.ex:2219: Code.find_file!/2
+    (elixir 1.18.4) lib/code.ex:1517: Code.require_file/2
+    ...
+```
